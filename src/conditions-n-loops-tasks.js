@@ -172,8 +172,17 @@ function getIndexOf(/* str, letter */) {
  *  12345, 0    => false
  *  12345, 6    => false
  */
-function isContainNumber(/* num, digit */) {
-  throw new Error('Not implemented');
+function isContainNumber(num, digit) {
+  let output = false;
+  let number = num;
+  while (number > 0) {
+    const curDig = number % 10;
+    if (curDig === digit) {
+      output = true;
+    }
+    number = Math.floor(number / 10);
+  }
+  return output;
 }
 
 /**
@@ -214,8 +223,42 @@ function getBalanceIndex(/* arr */) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const matrix = [];
+  let rowStart = 0;
+  let rowEnd = size - 1;
+  let colStart = 0;
+  let colEnd = size - 1;
+  let counter = 1;
+  for (let i = 0; i < size; i += 1) {
+    matrix[i] = [];
+    for (let j = 0; j < size; j += 1) {
+      matrix[i][j] = 0;
+    }
+  }
+  while (counter <= size * size) {
+    for (let i = colStart; i <= colEnd; i += 1) {
+      matrix[rowStart][i] = counter;
+      counter += 1;
+    }
+    rowStart += 1;
+    for (let i = rowStart; i <= rowEnd; i += 1) {
+      matrix[i][colEnd] = counter;
+      counter += 1;
+    }
+    colEnd -= 1;
+    for (let i = colEnd; i >= colStart; i -= 1) {
+      matrix[rowEnd][i] = counter;
+      counter += 1;
+    }
+    rowEnd -= 1;
+    for (let i = rowEnd; i >= rowStart; i -= 1) {
+      matrix[i][colStart] = counter;
+      counter += 1;
+    }
+    colStart += 1;
+  }
+  return matrix;
 }
 
 /**

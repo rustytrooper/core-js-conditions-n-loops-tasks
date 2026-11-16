@@ -493,8 +493,31 @@ function sortByAsc(arr) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  const shuffleOnce = (s) => {
+    let even = '';
+    let odd = '';
+    for (let i = 0; i < s.length; i += 1) {
+      if (i % 2 === 0) even += s[i];
+      else odd += s[i];
+    }
+    return even + odd;
+  };
+
+  let cycleLength = 0;
+  let current = str;
+  do {
+    current = shuffleOnce(current);
+    cycleLength += 1;
+  } while (current !== str);
+
+  const steps = iterations % cycleLength;
+
+  let result = str;
+  for (let k = 0; k < steps; k += 1) {
+    result = shuffleOnce(result);
+  }
+  return result;
 }
 
 /**
@@ -515,8 +538,53 @@ function shuffleChar(/* str, iterations */) {
  * 321321   => 322113
  *
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  let count = 0;
+  let temp = number;
+  while (temp > 0) {
+    count += 1;
+    temp = Math.floor(temp / 10);
+  }
+
+  const digits = new Array(count);
+  temp = number;
+  for (let i = count - 1; i >= 0; i -= 1) {
+    digits[i] = temp % 10;
+    temp = Math.floor(temp / 10);
+  }
+
+  let i = count - 2;
+  while (i >= 0 && digits[i] >= digits[i + 1]) {
+    i -= 1;
+  }
+
+  if (i < 0) return number;
+
+  let j = count - 1;
+  while (digits[j] <= digits[i]) {
+    j -= 1;
+  }
+
+  const tmp = digits[i];
+  digits[i] = digits[j];
+  digits[j] = tmp;
+
+  let left = i + 1;
+  let right = count - 1;
+  while (left < right) {
+    const t = digits[left];
+    digits[left] = digits[right];
+    digits[right] = t;
+    left += 1;
+    right -= 1;
+  }
+
+  let result = 0;
+  for (let k = 0; k < count; k += 1) {
+    result = result * 10 + digits[k];
+  }
+
+  return result;
 }
 
 module.exports = {
